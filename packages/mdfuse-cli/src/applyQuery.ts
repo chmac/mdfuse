@@ -5,25 +5,26 @@ export const applyQuery = (
   index: IndexEntry[],
   query?: string,
   limit?: number
-) => {
+): Fuse.FuseResult<IndexEntry>[] => {
   if (typeof query === "undefined") {
-    return index;
+    return index.map((item) => {
+      return { score: 1, refIndex: -1, item };
+    });
   }
 
-  const flatIndex = index.map((entry) => {
-    return {
-      content: entry.segment.content,
-      type: entry.segment.type,
-      path: entry.file.path,
-      name: entry.file.name,
-    };
-  });
+  // const flatIndex = index.map((entry) => {
+  //   return {
+  //     content: entry.segment.content,
+  //     type: entry.segment.type,
+  //     path: entry.file.path,
+  //     name: entry.file.name,
+  //   };
+  // });
 
-  const fuse = new Fuse(flatIndex, {
+  const fuse = new Fuse(index, {
     includeScore: true,
     includeMatches: false,
-    // keys: ["content", "type", "path", "name"],
-    keys: ["content"],
+    keys: ["segment.content"],
   });
 
   const options = typeof limit === "undefined" ? undefined : { limit };

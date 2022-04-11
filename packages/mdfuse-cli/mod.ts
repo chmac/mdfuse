@@ -3,6 +3,7 @@ import { getMarkdownFiles } from "./src/getMarkdownFiles.ts";
 import { buildIndex } from "./src/buildIndex.ts";
 import { filterIndexForTag } from "./src/filterIndexForTag.ts";
 import { applyQuery } from "./src/applyQuery.ts";
+import { renderResults } from "./src/renderResults.ts";
 
 await new Cliffy.Command()
   .name("md-fuse")
@@ -23,13 +24,7 @@ await new Cliffy.Command()
 
     const results = applyQuery(filteredIndex, query, limit);
 
-    console.log(
-      `#7Gbiec Run with tag ${tag} query ${query} and limit ${limit}`
-    );
-    console.log(
-      `#kzKuGe Got ${results.length} results from ${index.length} items`
-    );
-    console.log(results);
+    renderResults(results);
   })
   .parse(Deno.args);
 
