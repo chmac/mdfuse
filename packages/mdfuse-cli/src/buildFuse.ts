@@ -13,7 +13,7 @@ export const buildFuse = (index: IndexEntry[]) => {
 
   const fuse = new Fuse(flatIndex, {
     includeScore: true,
-    includeMatches: true,
+    includeMatches: false,
     // keys: ["content", "type", "path", "name"],
     keys: ["content"],
   });
