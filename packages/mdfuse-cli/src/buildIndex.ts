@@ -1,5 +1,6 @@
 import { frontmatter, split } from "../deps.ts";
 import { MarkdownFileWithContent, IndexEntry } from "../types.ts";
+import { hasKey } from "./utils.ts";
 
 const caughtFrontmatter = (input: string) => {
   try {
@@ -35,7 +36,19 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
         file,
       };
     });
-    return results;
+    const resultsWithTags = results.map((result) => {
+      const frontmatterTags =
+        typeof result.frontmatter === "object" &&
+        result.frontmatter !== null &&
+        hasKey("tags", result.frontmatter) &&
+        Array.isArray(result.frontmatter.tags)
+          ? result.frontmatter.tags
+          : [];
+      const hashtags = result.segment.content.match(/(#[\w\.]+)/g);
+      const tags = frontmatterTags.concat(hashtags);
+      return { ...result, tags };
+    });
+    return resultsWithTags;
   });
   return results.flat();
 };
