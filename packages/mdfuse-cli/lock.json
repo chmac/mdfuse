@@ -133,5 +133,6 @@
   "https://deno.land/x/cliffy@v0.23.0/table/table.ts": "3905c40d030626faab87a3e2e24982382c0d4c11eccae829a9e04db94d29e3e9",
   "https://deno.land/x/cliffy@v0.23.0/table/utils.ts": "187bb7dcbcfb16199a5d906113f584740901dfca1007400cba0df7dcd341bc29",
   "https://deno.land/x/frontmatter@v0.1.2/deps.ts": "8dac748120ead866b93388be343151dfa37ca7876a220247fa6f02f7ccb897ee",
-  "https://deno.land/x/frontmatter@v0.1.2/mod.ts": "d9566a111e5191b2cfd1aebfee87d4849570a5433979745663aecd267b006650"
+  "https://deno.land/x/frontmatter@v0.1.2/mod.ts": "d9566a111e5191b2cfd1aebfee87d4849570a5433979745663aecd267b006650",
+  "https://raw.githubusercontent.com/chmac/util-md-to-arrays/2bdd5cea16e1e400234244258a65ee8afa552994/src/index.ts": "7edc939d49efffcd304762efa030105ea289fb0e8c0733b54c534e6797fee5c2"
 }
