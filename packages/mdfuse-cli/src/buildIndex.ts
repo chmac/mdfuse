@@ -44,8 +44,9 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
         Array.isArray(result.frontmatter.tags)
           ? result.frontmatter.tags
           : [];
-      const hashtags = result.segment.content.match(/(#[\w\.]+)/g);
-      const tags = frontmatterTags.concat(hashtags);
+      const hashtags = result.segment.content.match(/(#[\w\.]+)/g) || [];
+      const contentTags = hashtags.map((hashtag) => hashtag.slice(1));
+      const tags = frontmatterTags.concat(contentTags);
       return { ...result, tags };
     });
     return resultsWithTags;

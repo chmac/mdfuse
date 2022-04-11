@@ -1,7 +1,8 @@
 import { Cliffy } from "./deps.ts";
 import { getMarkdownFiles } from "./src/getMarkdownFiles.ts";
 import { buildIndex } from "./src/buildIndex.ts";
-import { buildFuse } from "./src/buildFuse.ts";
+import { filterIndexForTag } from "./src/filterIndexForTag.ts";
+import { applyQuery } from "./src/applyQuery.ts";
 
 await new Cliffy.Command()
   .name("md-fuse")
@@ -10,19 +11,21 @@ await new Cliffy.Command()
     "-l <count:integer>, --limit <count:integer>",
     "Limit the number of results"
   )
-  .arguments("<query:string>")
+  .option("-t <tag> --tag <tag>", "Tags to match before applying the query")
+  .arguments("[query:string]")
   .description("Simple fuse based search of markdown documents")
-  .action(async ({ limit }, query) => {
+  .action(async ({ tag, limit }, query) => {
     const files = await getMarkdownFiles();
 
     const index = buildIndex(files);
 
-    const fuse = buildFuse(index);
+    const filteredIndex = filterIndexForTag(index, tag);
 
-    const options = typeof limit === "undefined" ? undefined : { limit };
-    const results = fuse.search(query, options);
+    const results = applyQuery(filteredIndex, query, limit);
 
-    console.log(`#7Gbiec Run with query ${query}`);
+    console.log(
+      `#7Gbiec Run with tag ${tag} query ${query} and limit ${limit}`
+    );
     console.log(
       `#kzKuGe Got ${results.length} results from ${index.length} items`
     );

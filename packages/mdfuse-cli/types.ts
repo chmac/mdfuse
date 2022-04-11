@@ -11,4 +11,5 @@ export type IndexEntry = {
   };
   frontmatter: unknown;
   file: MarkdownFileWithContent;
+  tags: string[];
 };
