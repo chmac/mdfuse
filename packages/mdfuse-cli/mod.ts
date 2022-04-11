@@ -5,9 +5,8 @@ await new Cliffy.Command()
   .version("0.1.0")
   .arguments("<query:string>")
   .description("Simple fuse based search of markdown documents")
-  .action(async (options, args) => {
-    console.log("#7Gbiec Run");
-    console.log(args);
+  .action(async (options, query) => {
+    console.log(`#7Gbiec Run with query ${query}`);
   })
   .parse(Deno.args);
 
