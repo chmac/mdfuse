@@ -1,5 +1,5 @@
 import { frontmatter, split } from "../deps.ts";
-import { MarkdownFileWithContent } from "../types.ts";
+import { MarkdownFileWithContent, IndexEntry } from "../types.ts";
 
 const caughtFrontmatter = (input: string) => {
   try {
@@ -13,7 +13,7 @@ const caughtFrontmatter = (input: string) => {
   }
 };
 
-export const buildIndex = (files: MarkdownFileWithContent[]) => {
+export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
   const results = files.map((file) => {
     const parseResult = caughtFrontmatter(file.content);
     const segments = split(parseResult.content);

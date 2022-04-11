@@ -5,4 +5,3 @@ export * as frontmatter from "https://raw.githubusercontent.com/chmac/frontmatte
 export { split } from "https://raw.githubusercontent.com/chmac/util-md-to-arrays/2bdd5cea16e1e400234244258a65ee8afa552994/src/index.ts";
 // @deno-types="https://deno.land/x/fuse@v6.4.1/dist/fuse.d.ts"
 export { default as Fuse } from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
-export * as lodash from "https://deno.land/x/lodash@4.17.19/dist/lodash.fp.js";
