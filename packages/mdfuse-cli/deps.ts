@@ -1,4 +1,5 @@
 export * as fs from "https://deno.land/std@0.134.0/fs/mod.ts";
+export * as colours from "https://deno.land/std@0.134.0/fmt/colors.ts";
 export * as Cliffy from "https://deno.land/x/cliffy@v0.23.0/mod.ts";
 // export * as frontmatter from "https://deno.land/x/frontmatter@v0.1.2/mod.ts";
 export * as frontmatter from "https://raw.githubusercontent.com/chmac/frontmatter/371b2b8afcb736903ab1c8b4355829ceb519486e/mod.ts";
