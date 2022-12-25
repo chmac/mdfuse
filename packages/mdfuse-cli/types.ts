@@ -4,11 +4,14 @@ export type MarkdownFileWithContent = {
   content: string;
 };
 
+export type IndexSegment = {
+  type: string;
+  content: string;
+  heading?: string;
+};
+
 export type IndexEntry = {
-  segment: {
-    type: string;
-    content: string;
-  };
+  segment: IndexSegment;
   frontmatter: unknown;
   file: MarkdownFileWithContent;
   tags: string[];

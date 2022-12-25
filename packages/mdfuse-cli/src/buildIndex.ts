@@ -1,5 +1,5 @@
-import { frontmatter, split } from "../deps.ts";
-import { MarkdownFileWithContent, IndexEntry } from "../types.ts";
+import { debug, frontmatter, split } from "../deps.ts";
+import { MarkdownFileWithContent, IndexSegment, IndexEntry } from "../types.ts";
 import { hasKey } from "./utils.ts";
 
 const caughtFrontmatter = (input: string) => {
@@ -18,7 +18,8 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
   const results = files.map((file) => {
     const parseResult = caughtFrontmatter(file.content);
     const segments = split(parseResult.content);
-    const augmentedSegments = segments
+
+    const { segments: augmentedSegments } = segments
       .map((segment) => {
         if (Array.isArray(segment)) {
           const listSegments = segment.map((item) => {
@@ -28,7 +29,28 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
         }
         return { type: "text", content: segment };
       })
-      .flat();
+      .flat()
+      .reduce<{ lastHeading?: string; segments: IndexSegment[] }>(
+        (accumulator, segment, _index) => {
+          const lastHeading = segment.content.startsWith("#")
+            ? segment.content
+            : accumulator.lastHeading;
+
+          const segments = accumulator.segments.concat({
+            ...segment,
+            heading: lastHeading,
+          });
+
+          return {
+            lastHeading,
+            segments,
+          };
+        },
+        { lastHeading: undefined, segments: [] }
+      );
+
+    debug(`#3BbRSg augmentedSegments`, augmentedSegments);
+
     const results = augmentedSegments.map((segment) => {
       return {
         segment,
@@ -36,6 +58,7 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
         file,
       };
     });
+
     const resultsWithTags = results.map((result) => {
       const frontmatterTags =
         typeof result.frontmatter === "object" &&
@@ -49,6 +72,7 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
       const tags = frontmatterTags.concat(contentTags);
       return { ...result, tags };
     });
+
     return resultsWithTags;
   });
   return results.flat();
