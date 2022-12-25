@@ -21,10 +21,10 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
     const augmentedSegments = segments
       .map((segment) => {
         if (Array.isArray(segment)) {
-          const listSegements = segment.map((item) => {
+          const listSegments = segment.map((item) => {
             return { type: "listItem", content: item };
           });
-          return listSegements;
+          return listSegments;
         }
         return { type: "text", content: segment };
       })
