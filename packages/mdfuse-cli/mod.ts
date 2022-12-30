@@ -4,6 +4,7 @@ import { buildIndex } from "./src/buildIndex.ts";
 import { filterIndexForHeading } from "./src/filterIndexForHeading.ts";
 import { filterIndexForTag } from "./src/filterIndexForTag.ts";
 import { applyQuery } from "./src/applyQuery.ts";
+import { renderJsonOutput } from "./src/renderJsonOutput.ts";
 import { renderResults } from "./src/renderResults.ts";
 
 await new Cliffy.Command()
@@ -18,9 +19,10 @@ await new Cliffy.Command()
     "Heading to match before applying the query"
   )
   .option("-t <tag> --tag <tag>", "Tags to match before applying the query")
+  .option("-j --json", "Output in JSON format")
   .arguments("[query:string]")
   .description("Simple fuse based search of markdown documents")
-  .action(async ({ limit, heading, tag }, query) => {
+  .action(async ({ limit, heading, tag, json }, query) => {
     const files = await getMarkdownFiles();
 
     const index = buildIndex(files);
@@ -31,7 +33,11 @@ await new Cliffy.Command()
 
     const results = applyQuery(filteredIndex, query, limit);
 
-    renderResults(results);
+    if (json) {
+      renderJsonOutput(results);
+    } else {
+      renderResults(results);
+    }
   })
   .parse(Deno.args);
 
