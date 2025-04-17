@@ -2,35 +2,42 @@ import { debug, frontmatter, split } from "../deps.ts";
 import { MarkdownFileWithContent, IndexSegment, IndexEntry } from "../types.ts";
 import { hasKey } from "./utils.ts";
 
-const caughtFrontmatter = (input: string) => {
+const caughtFrontmatter = (input: string, verbose: boolean = false) => {
   try {
     return frontmatter.parse(input);
   } catch (error) {
-    console.error("#ayzgJ4 Error parsing frontmatter. Error:");
-    console.error(error);
-    console.error("#ayzgJ4 Input:");
-    console.error(input);
+    if (verbose) {
+      console.error("#ayzgJ4 Error parsing frontmatter. Error:");
+      console.error(error);
+      console.error("#ayzgJ4 Input:");
+      console.error(input);
+    }
   }
 };
 
-const caughtSplit = (input: string) => {
+const caughtSplit = (input: string, verbose: boolean = false) => {
   try {
     return split(input);
   } catch (error) {
-    console.error("#rLm6rV Error in split");
-    console.error(error);
+    if (verbose) {
+      console.error("#rLm6rV Error in split");
+      console.error(error);
+    }
   }
 };
 
-export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
+export const buildIndex = (
+  files: MarkdownFileWithContent[],
+  verbose: boolean = false
+): IndexEntry[] => {
   const results = files.flatMap((file) => {
-    const parseResult = caughtFrontmatter(file.content);
+    const parseResult = caughtFrontmatter(file.content, verbose);
 
     if (typeof parseResult === "undefined") {
       return;
     }
 
-    const segments = caughtSplit(parseResult.content);
+    const segments = caughtSplit(parseResult.content, verbose);
 
     if (typeof segments === "undefined") {
       return;

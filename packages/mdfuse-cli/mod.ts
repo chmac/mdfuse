@@ -24,12 +24,13 @@ await new Cliffy.Command()
     "Exclude paths from search, comma separated"
   )
   .option("-j --json", "Output in JSON format")
+  .option("-v --verbose", "Enable more detailed error logging")
   .arguments("[query:string]")
   .description("Simple fuse based search of markdown documents")
-  .action(async ({ limit, heading, tag, exclude, json }, query) => {
+  .action(async ({ limit, heading, tag, exclude, json, verbose }, query) => {
     const files = await getMarkdownFiles(exclude);
 
-    const index = buildIndex(files);
+    const index = buildIndex(files, verbose);
 
     const filteredForHeadingsIndex = filterIndexForHeading(index, heading);
 
