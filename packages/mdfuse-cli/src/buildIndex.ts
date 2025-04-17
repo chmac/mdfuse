@@ -10,14 +10,31 @@ const caughtFrontmatter = (input: string) => {
     console.error(error);
     console.error("#ayzgJ4 Input:");
     console.error(input);
-    throw error;
+  }
+};
+
+const caughtSplit = (input: string) => {
+  try {
+    return split(input);
+  } catch (error) {
+    console.error("#rLm6rV Error in split");
+    console.error(error);
   }
 };
 
 export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
-  const results = files.map((file) => {
+  const results = files.flatMap((file) => {
     const parseResult = caughtFrontmatter(file.content);
-    const segments = split(parseResult.content);
+
+    if (typeof parseResult === "undefined") {
+      return;
+    }
+
+    const segments = caughtSplit(parseResult.content);
+
+    if (typeof segments === "undefined") {
+      return;
+    }
 
     const { segments: augmentedSegments } = segments
       .map((segment) => {
@@ -75,5 +92,8 @@ export const buildIndex = (files: MarkdownFileWithContent[]): IndexEntry[] => {
 
     return resultsWithTags;
   });
-  return results.flat();
+
+  const filteredResults = results.filter((v) => typeof v !== "undefined");
+
+  return filteredResults;
 };

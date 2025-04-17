@@ -9,7 +9,7 @@ import { renderResults } from "./src/renderResults.ts";
 
 await new Cliffy.Command()
   .name("md-fuse")
-  .version("0.1.0")
+  .version("0.2.0")
   .option(
     "-l <count:integer>, --limit <count:integer>",
     "Limit the number of results"
