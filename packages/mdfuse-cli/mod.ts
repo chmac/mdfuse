@@ -19,11 +19,15 @@ await new Cliffy.Command()
     "Heading to match before applying the query"
   )
   .option("-t <tag> --tag <tag>", "Tags to match before applying the query")
+  .option(
+    "-x <exclude>, --exclude <exclude>",
+    "Exclude paths from search, comma separated"
+  )
   .option("-j --json", "Output in JSON format")
   .arguments("[query:string]")
   .description("Simple fuse based search of markdown documents")
-  .action(async ({ limit, heading, tag, json }, query) => {
-    const files = await getMarkdownFiles();
+  .action(async ({ limit, heading, tag, exclude, json }, query) => {
+    const files = await getMarkdownFiles(exclude);
 
     const index = buildIndex(files);
 
