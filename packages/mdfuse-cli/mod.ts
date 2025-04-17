@@ -28,20 +28,27 @@ await new Cliffy.Command()
   .arguments("[query:string]")
   .description("Simple fuse based search of markdown documents")
   .action(async ({ limit, heading, tag, exclude, json, verbose }, query) => {
-    const files = await getMarkdownFiles(exclude);
+    try {
+      const files = await getMarkdownFiles(exclude);
 
-    const index = buildIndex(files, verbose);
+      const index = buildIndex(files, verbose);
 
-    const filteredForHeadingsIndex = filterIndexForHeading(index, heading);
+      const filteredForHeadingsIndex = filterIndexForHeading(index, heading);
 
-    const filteredIndex = filterIndexForTag(filteredForHeadingsIndex, tag);
+      const filteredIndex = filterIndexForTag(filteredForHeadingsIndex, tag);
 
-    const results = applyQuery(filteredIndex, query, limit);
+      const results = applyQuery(filteredIndex, query, limit);
 
-    if (json) {
-      renderJsonOutput(results);
-    } else {
-      renderResults(results);
+      if (json) {
+        renderJsonOutput(results);
+      } else {
+        renderResults(results);
+      }
+    } catch (error) {
+      if (!(error instanceof Deno.errors.BrokenPipe)) {
+        console.error("#E9F571 uncaught error");
+        console.error(error);
+      }
     }
   })
   .parse(Deno.args);
